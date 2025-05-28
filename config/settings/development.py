@@ -1,4 +1,3 @@
 from .base import *
 
-DEBUG = True
-ALLOWED_HOSTS = ["*"]
+env.read_env(os.path.join(BASE_DIR, ".env.dev"))
