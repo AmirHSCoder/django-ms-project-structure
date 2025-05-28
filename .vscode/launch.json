@@ -14,7 +14,8 @@
             ],
             "django": true,
             "env": {
-                "DJANGO_SETTINGS_MODULE": "config.settings.development"
+                "DJANGO_SETTINGS_MODULE": "config.settings.development",
+                "DJANGO_ENV_FILE": "${workspaceFolder}/.env.dev"
             }
         }
     ]
