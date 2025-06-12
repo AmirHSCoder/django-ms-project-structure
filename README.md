@@ -1,7 +1,8 @@
 
 
 
-# Clone the project
+# Getting Started
+Clone the project
 git clone ....
 cd ....
 python -m venv .venv
@@ -20,3 +21,15 @@ python manage.py migrate
 python manage.py runserver
 Or run with Uvicorn:
 uvicorn config.asgi:application --reload
+
+
+
+# Run all tests
+pytest
+
+# Run specific test file
+pytest tests/unit/repositories/test_base_repository.py
+pytest tests/unit/repositories/test_user_repository.py
+
+# Run with verbose output
+pytest -v
