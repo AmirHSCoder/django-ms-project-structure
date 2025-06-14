@@ -11,6 +11,7 @@ class TestBaseRepository(BaseRepository[TestModel]):
 
 class TestBaseService(BaseService[TestModel]):
     repository_class = TestBaseRepository
+    __test__ = False
 
 
 class TestBaseServiceImplementation(TransactionTestCase):
