@@ -1,5 +1,5 @@
-from abc import ABC, abstractmethod
-from typing import Generic, TypeVar, Type, List, Optional
+from abc import ABC
+from typing import Generic, TypeVar, Type, List, Optional, Any
 from django.db import models
 
 T = TypeVar('T', bound=models.Model)
@@ -45,3 +45,11 @@ class BaseRepository(Generic[T], ABC):
         Deletes a model instance.
         """
         instance.delete()
+
+    def filter(self, **filters: Any) -> models.QuerySet:
+        """Return a queryset filtered by the supplied arguments."""
+        return self.model.objects.filter(**filters)
+
+    def exists(self, **filters: Any) -> bool:
+        """Return ``True`` if a record matching the filters exists."""
+        return self.model.objects.filter(**filters).exists()
