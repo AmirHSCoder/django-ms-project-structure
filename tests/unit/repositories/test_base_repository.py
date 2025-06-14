@@ -1,23 +1,34 @@
-from django.test import TestCase
-from django.db import models
+from django.test import TransactionTestCase
+from django.db import connection, models
 from apps.common.repositories.base import BaseRepository
-from typing import List, Optional, Any
-from unittest.mock import Mock, patch
-
-class TestModel(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    
-    class Meta:
-        app_label = 'test_app'
+from conftest import TestModel
 
 class TestBaseRepository(BaseRepository[TestModel]):
     model = TestModel
 
-class TestBaseRepositoryImplementation(TestCase):
+class TestBaseRepositoryImplementation(TransactionTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        # Create the table for the test model
+        connection.disable_constraint_checking()
+        with connection.schema_editor() as schema_editor:
+            schema_editor.create_model(TestModel)
+        connection.enable_constraint_checking()
+
+    @classmethod
+    def tearDownClass(cls):
+        # Drop the table for the test model
+        connection.disable_constraint_checking()
+        with connection.schema_editor() as schema_editor:
+            schema_editor.delete_model(TestModel)
+        connection.enable_constraint_checking()
+        super().tearDownClass()
+
     def setUp(self):
         self.repository = TestBaseRepository()
+        # Ensure a clean state before each test
+        TestModel.objects.all().delete()
         self.test_instance = TestModel.objects.create(
             name="Test Item",
             description="Test Description",
@@ -126,5 +137,5 @@ class TestBaseRepositoryImplementation(TestCase):
         """Test filtering with select_related"""
         # This test would be more relevant with related models
         results = self.repository.filter(is_active=True)
-        self.assertIsInstance(results, list)
-        self.assertTrue(all(isinstance(item, TestModel) for item in results)) 
+        self.assertIsInstance(results, models.QuerySet)
+        self.assertTrue(all(isinstance(item, TestModel) for item in results))
