@@ -8,6 +8,7 @@ User = get_user_model()
 # Model Fixtures
 class TestModel(models.Model):
     """A test model for repository testing"""
+    __test__ = False  # prevent pytest from collecting this class as tests
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
