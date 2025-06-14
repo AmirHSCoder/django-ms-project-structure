@@ -1,6 +1,9 @@
 from typing import List, Optional
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from .base import BaseRepository
+
+User = get_user_model()
+
 
 class UserRepository(BaseRepository[User]):
     """
