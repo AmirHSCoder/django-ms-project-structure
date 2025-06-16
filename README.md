@@ -13,6 +13,17 @@ pip install -r requirements/development.txt
 # Install Django and ASGI server
 pip install django uvicorn
 
+# Using Poetry
+The repository also contains a `pyproject.toml` so it can be managed with
+[Poetry](https://python-poetry.org/). No lock file is committed and the
+environment may not have network access. Running `poetry install` therefore
+attempts to download packages from PyPI and can fail. If that happens, install
+dependencies with the requirements file instead:
+
+```bash
+pip install -r requirements/development.txt
+```
+
 # Run the Project
 
 # Export dev settings
